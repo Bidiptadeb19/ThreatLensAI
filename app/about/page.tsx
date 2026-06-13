@@ -20,13 +20,13 @@ export default function AboutPage() {
     <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <p className="text-sm uppercase tracking-[0.24em] text-cyanline">Methodology</p>
       <h1 className="mt-3 text-4xl font-bold text-white">Transparent multi-signal scoring</h1>
-      <p className="mt-4 max-w-3xl leading-7 text-slate-300">ThreatLens combines deterministic feature extraction with optional external intelligence and AI-compatible explanations. Every score is decomposed into visible evidence so a judge, user, or analyst can understand the verdict.</p>
+      <p className="mt-4 max-w-3xl leading-7 text-slate-300">ThreatLens combines deterministic feature extraction with optional external intelligence and AI-compatible explanations. Every score is decomposed into visible evidence so a security team, user, or analyst can understand the verdict.</p>
 
       <section className="mt-10 grid gap-6 lg:grid-cols-3">
         {[
           ["Safe by design", "The scanner never renders the target webpage, executes scripts, downloads files, or allows localhost/private-IP scans."],
-          ["Hackathon practical", "The app works without paid API keys using local heuristics, demo samples, and template analyst reports."],
-          ["Extension ready", "Adapters are prepared for VirusTotal, Google Safe Browsing, AbuseIPDB, urlscan.io, and OpenAI-compatible models."]
+          ["Offline-ready analysis", "The app works without external API keys using built-in local heuristics, pre-configured samples, and rule-based analyst reports."],
+          ["Integration-first", "Adapters are fully implemented for VirusTotal, Google Safe Browsing, AbuseIPDB, urlscan.io, and OpenAI-compatible models."]
         ].map(([title, copy]) => (
           <article key={title} className="rounded-lg border border-white/10 bg-white/[0.045] p-6">
             <h2 className="text-xl font-semibold text-white">{title}</h2>

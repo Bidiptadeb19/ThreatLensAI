@@ -8,7 +8,7 @@ export default function HomePage() {
     <main>
       <section className="cyber-grid mx-auto grid min-h-[calc(100vh-73px)] max-w-7xl content-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyanline">Hackathon security demo</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyanline">URL Threat Intelligence</p>
           <h1 className="mt-5 max-w-4xl text-5xl font-black leading-tight text-white lg:text-7xl">ThreatLens AI: Explainable URL Threat Detection</h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">Analyze URLs using IP intelligence, DNS signals, SSL checks, redirect behavior, and AI-powered reasoning.</p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -19,7 +19,7 @@ export default function HomePage() {
         <div className="rounded-lg border border-cyanline/20 bg-panel/80 p-6 shadow-glow">
           <div className="flex items-center justify-between border-b border-white/10 pb-4">
             <span className="text-sm uppercase tracking-[0.2em] text-slate-400">Live signal stack</span>
-            <span className="rounded border border-acid/40 bg-acid/10 px-3 py-1 text-sm text-acid">Demo ready</span>
+            <span className="rounded border border-acid/40 bg-acid/10 px-3 py-1 text-sm text-acid">Engine Active</span>
           </div>
           <div className="mt-5 grid gap-3">
             {signals.map((signal, index) => (

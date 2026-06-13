@@ -1,127 +1,116 @@
 # ThreatLens AI
 
-ThreatLens AI is a hackathon-ready web app for explainable URL threat detection. It analyzes URLs using URL structure, DNS resolution, IP intelligence, SSL certificate checks, redirect behavior, optional reputation providers, and AI-style reporting.
+ThreatLens AI is an explainable URL threat detection and analysis platform. It provides a transparent, multi-signal security scanner that evaluates URLs using domain structure, DNS resolution, IP intelligence, SSL certificate health, and HTTP redirect behavior, integrating with threat intelligence providers and AI-powered reasoning to produce detailed, human-readable security reports.
+
+---
+
+## Project Overview
+
+ThreatLens AI is designed to demystify malicious link detection by providing clear, detailed, and human-readable security reports. Instead of giving a simple "safe" or "unsafe" classification, ThreatLens AI decomposes every scanned URL into detailed risk metrics, visualizes the redirect paths, checks infrastructure details, and generates explainable security reports. This empowers security teams, system administrators, and daily users to make informed decisions before visiting suspicious destinations.
+
+---
 
 ## Problem Statement
 
-Identification of URL-based attacks from IP data. Attackers use phishing links, malware delivery URLs, suspicious redirects, and deceptive domains to compromise users before they realize a link is unsafe.
+Modern cyber threats rely heavily on URL-based attacks, such as phishing, social engineering campaigns, credential harvesting, and malware delivery. Attackers constantly generate new, deceptive domains, use multi-stage redirects to bypass firewalls, and obscure their infrastructure behind CDNs and proxy networks. 
 
-## Solution Overview
+Traditional threat protection services and static blocklists often fail to catch zero-day malicious links. Users need a safe, real-time method to analyze suspicious URLs without executing code on their own machines or exposing themselves to threat payloads.
 
-ThreatLens lets a user paste a URL, safely scans server-side metadata without rendering the target page, calculates a transparent 0-100 risk score, and generates an explainable security report with evidence and recommendations.
+---
 
-## Architecture
+## Proposed Solution
 
-- `app/` contains Next.js pages and API routes.
-- `components/` contains reusable report, gauge, scanner, and signal UI.
-- `lib/analyzers/` contains modular URL, DNS, SSL, redirect, and reputation analyzers.
-- `lib/scoring.ts` implements the transparent weighted scoring engine.
-- `lib/explain.ts` creates AI-compatible analyst explanations with a no-key template fallback.
-- `lib/storage.ts` stores recent reports in local JSON at `data/reports.json`.
+ThreatLens AI provides a multi-layer scanning engine that runs entirely server-side to safely inspect target URLs without rendering their HTML or executing client-side scripts. By inspecting URL lexical features, performing DNS queries, verifying SSL certificates, tracing HTTP redirect paths, and consulting IP reputation databases, the platform aggregates multiple signals into a unified, transparent risk score (0-100). The scoring is transparent and fully explainable, generating an instant security report that translates technical indicators into actionable recommendations.
+
+---
 
 ## Features
 
-- One-click URL scanner with staged loading.
-- Risk score gauge and Safe/Suspicious/Dangerous verdicts.
-- URL lexical feature extraction.
-- DNS and IP resolution with private/reserved IP blocking.
-- SSL certificate inspection.
-- Safe redirect chain analysis with timeout and redirect limits.
-- Optional API-key hooks for VirusTotal, Google Safe Browsing, AbuseIPDB, and urlscan.io.
-- OpenAI-compatible explanation abstraction with rule-based fallback.
-- Report history.
-- JSON export and browser PDF export.
-- Five safe demo URL samples.
+- **Lexical Analysis:** Extracts feature signals such as URL length, dot count, subdomain structure, suspicious keywords (e.g., `login`, `secure`, `bank`), Punycode/homograph risk, and URL shortener detection.
+- **DNS & Infrastructure Intelligence:** Resolves A/AAAA records, checks for multiple IP addresses, blocks localhost/private ranges (preventing SSRF), and performs IP geolocation.
+- **SSL Certificate Inspection:** Analyzes TLS certificate parameters (issuer, validity, expiration status) to identify self-signed, expired, or anomalous certificates.
+- **Redirect Chain Tracer:** Safely traces HTTP redirect hops, detecting final destination mismatches, high redirect limits, or redirect timeouts.
+- **Explainable Scoring:** Utilizes a transparent scoring model where each feature adds to a 0-100 risk score, classifying links as *Safe*, *Suspicious*, or *Dangerous*.
+- **Security Analyst Explanations:** Generates human-readable explanations and security team action plans using OpenAI-compatible APIs (with a fully functional offline local rule-based fallback).
+- **Scan History:** Keeps a local record of scanned URLs, allowing users to revisit previous analyses.
+- **PDF & JSON Export:** Allows security analysts to export findings as structured JSON or download print-ready PDF reports.
+- **Security-First Design:** 
+  - Never renders scanned webpage HTML or executes scripts.
+  - Never downloads target files.
+  - Server-side timeouts prevent infinite loading attacks.
+  - Blocks localhost and private/reserved IP scans to eliminate Server-Side Request Forgery (SSRF) risks.
 
-## Tech Stack
+---
 
-- Next.js + React + TypeScript
-- Tailwind CSS
-- Next.js API routes
-- Local JSON persistence
-- Node DNS/TLS/fetch primitives
+## Technology Stack
 
-## Run Locally
+- **Frontend & Routing:** Next.js (React), TypeScript, Tailwind CSS
+- **Backend APIs:** Next.js API Routes (Server-side scanning & DNS/TLS resolution)
+- **Persistence:** Local JSON-based storage for scan history
+- **Third-Party Integrations:** Optional support for VirusTotal, Google Safe Browsing, AbuseIPDB, urlscan.io, and OpenAI-compatible models
 
+---
+
+## Setup & Usage Instructions
+
+### Prerequisites
+
+Make sure you have [Node.js](https://nodejs.org/) installed (version 18+ recommended).
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Bidiptadeb19/ThreatLensAI.git
+   cd ThreatLensAI
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables:**
+   Copy `.env.example` to `.env.local`:
+   ```bash
+   cp .env.example .env.local
+   ```
+   *(On Windows PowerShell, use: `Copy-Item .env.example .env.local`)*
+
+4. **Open `.env.local` and configure your API keys (all external API keys are optional):**
+   ```env
+   # OpenAI-compatible API Configuration for AI reports
+   OPENAI_API_KEY=your_openai_api_key_here
+   OPENAI_BASE_URL=https://api.openai.com/v1
+   OPENAI_MODEL=gpt-4o-mini
+
+   # Threat Intelligence API Keys
+   VIRUSTOTAL_API_KEY=
+   GOOGLE_SAFE_BROWSING_API_KEY=
+   ABUSEIPDB_API_KEY=
+   URLSCAN_API_KEY=
+
+   # Scan settings
+   SCAN_TIMEOUT_MS=5000
+   SCAN_MAX_REDIRECTS=5
+   RATE_LIMIT_WINDOW_MS=60000
+   RATE_LIMIT_MAX=20
+   ```
+
+### Running Locally
+
+To run the development server:
 ```bash
-npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-## Environment Variables
+---
 
-Copy `.env.example` to `.env.local`.
+## Team Details
 
-```bash
-OPENAI_API_KEY=
-OPENAI_BASE_URL=https://api.openai.com/v1
-OPENAI_MODEL=gpt-4o-mini
-VIRUSTOTAL_API_KEY=
-GOOGLE_SAFE_BROWSING_API_KEY=
-ABUSEIPDB_API_KEY=
-URLSCAN_API_KEY=
-SCAN_TIMEOUT_MS=5000
-SCAN_MAX_REDIRECTS=5
-RATE_LIMIT_WINDOW_MS=60000
-RATE_LIMIT_MAX=20
-```
+Team Size: 1
 
-All external API keys are optional. Without keys, the app runs in demo mode with local heuristics and template explanations.
-
-## Demo Flow
-
-1. Open `/scan`.
-2. Pick a demo URL or paste a URL.
-3. Watch scan stages progress.
-4. Review the report verdict, risk score, reasons, technical indicators, IP intelligence, SSL card, redirect timeline, and recommendation.
-5. Export the report as JSON or use the PDF button to print/save as PDF.
-6. Visit `/history` to reopen previous scans.
-
-## Security Design
-
-- Does not render scanned webpage HTML.
-- Does not execute scripts from target sites.
-- Does not download files.
-- Uses server-side timeouts.
-- Blocks localhost and private/reserved IP scans.
-- Resolves DNS before metadata fetches to reduce SSRF risk.
-- Limits redirects.
-- Includes simple in-memory rate limiting.
-
-## Judging Criteria Mapping
-
-### Innovation
-
-- Multi-signal threat detection.
-- AI-generated explainable security report.
-- Combines URL, IP, DNS, SSL, redirect, and reputation intelligence.
-
-### Technical Implementation
-
-- Server-side scanner.
-- Risk scoring engine.
-- External threat-intel API support.
-- SSRF-safe design.
-- Modular analyzers.
-
-### User Experience
-
-- One-click URL scan.
-- Visual risk score.
-- Plain-English explanation.
-- Exportable report.
-
-### Problem Solving
-
-- Helps users and organizations detect phishing and malware URLs before clicking.
-- Useful for students, employees, small businesses, and security teams.
-
-## Future Scope
-
-- Full VirusTotal, Google Safe Browsing, AbuseIPDB, and urlscan.io response parsing.
-- WHOIS/domain-age provider integration.
-- Organization-level allow/block lists.
-- Team workspaces and shareable reports.
-- Background enrichment jobs and richer PDF generation.
+Member:
+- Bidipta Deb

@@ -2,7 +2,7 @@
   "name": "threatlens-ai",
   "version": "1.0.0",
   "private": true,
-  "description": "Hackathon-ready explainable URL threat detection app.",
+  "description": "Explainable URL threat detection and analysis platform.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
